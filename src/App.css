@@ -1,38 +1,82 @@
-.App {
-  text-align: center;
+body {
+  background: #24282F;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#searchbar {
+  background: #374c5f;
+  color: white;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.342);
+  font-size: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+::placeholder {
+  color: rgba(245, 245, 220, 0.479);
+  font-weight:lighter;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  width: 94%;
+  margin: 0 auto;
+  gap: 1rem;
+  min-height: 83vh;
+}
+
+.input-wrapper {
+  margin-top: 1.5rem;
+}
+
+.input-wrapper input {
+  display: block;
+  margin: 0 auto;
+  height: 2.2rem;
+  padding-left: 10px;
+  border-radius: 18px;
+  border: 1px solid black;
+  width: 60%;
+  outline: none;
+}
+
+.button-up {
+  position: fixed;
+  right: 15px;
+  bottom: 90px;
+  font-size: 3.5rem;
+  opacity: 50%;
+  color: black;
+  transition: all .3s ease;
+}
+
+.button-up:hover {
+  opacity: 70%;
+}
+
+.footer-wrapper {
+  position:static;
+  right: 0;
+  left: 0;
+  bottom: 0;  
+}
+
+.footer {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 40px
 }
 
-.App-link {
-  color: #61dafb;
+.footer div:nth-child(2) {
+  display: flex;
+  gap: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.footer-img {
+  font-size: 2rem;
+  margin-top: -10px;
+  color: black
+}
+
+.footer-img:hover {
+  cursor: pointer;
 }
