@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from "react-modal/lib/components/Modal";
 import { BsXLg, BsFillArrowUpCircleFill, BsGithub, BsLinkedin } from 'react-icons/bs';
 
@@ -7,23 +7,52 @@ import Card from './components/Card';
 import './App.css';
 
 function App() {
+  const charactersIdArray = [];
 
-  if (!localStorage.characters) {      
-      const charactersIdArray = [];
-
-      for (let i = 1; i <= 826; i++) {
-        charactersIdArray.push(i)
-    }
-
-    fetch(`https://rickandmortyapi.com/api/character/${charactersIdArray}`)
-    .then(resp => resp.json())
-    .then(resp => {
-      localStorage.setItem("characters", JSON.stringify(resp))
-    })
-    .catch(e => console.log(e))  
+  for (let i = 1; i <= 826; i++) {
+    charactersIdArray.push(i)
   }
+  const mockupCharacter = [{
+    "id": 1,
+    "name": "Rick Sanchez",
+    "status": "Alive",
+    "species": "Human",
+    "type": "",
+    "gender": "Male",
+    "origin": {
+    "name": "Earth (C-137)",
+    "url": "https://rickandmortyapi.com/api/location/1"
+    },
+    "location": {
+    "name": "Citadel of Ricks",
+    "url": "https://rickandmortyapi.com/api/location/3"
+    },
+    "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+  }]
 
-  const characters = JSON.parse(localStorage.characters)
+  const [characters, setCharacters] = useState(mockupCharacter)
+
+  const data = typeof localStorage.characters != 'undefined' ? JSON.parse(localStorage.characters) : 
+  (async () => {
+    try {
+      const response = await fetch(`https://rickandmortyapi.com/api/character/${charactersIdArray}`)
+      const data = await response.json()
+      localStorage.setItem("characters", JSON.stringify(data))
+      return data
+    } catch(e) {
+      console.log('try catch error ->', e)
+    }
+  })()
+ 
+  useEffect(() => {
+    if (data.constructor.name === "Promise") {
+      data.then(resp => setCharacters(resp))
+    } else {
+      setCharacters(data)
+    }
+  }, [])
+
+  const [modalCharacter, setModalCharacter] = useState(characters[0])
 
   const [input, setInput] = useState(' ')
 
@@ -31,7 +60,6 @@ function App() {
     setInput(e.target.value.toLowerCase())
   }
 
-  const [modalCharacter, setModalCharacter] = useState(characters[0])
 
   const handleModalContent = (id, character) => {
     setModalCharacter(character)
@@ -57,8 +85,11 @@ function App() {
       <a href="#">
         <BsFillArrowUpCircleFill className='button-up'/>
       </a>
+
       <div className='card-wrapper'>
-        {characters.filter(char => char.name.toLowerCase().includes(input)).map(char => <Card key={char.id} handleModalContent={handleModalContent} character={char} openModal={openModal} />)}
+        {
+          characters.filter(char => char.name.toLowerCase().includes(input)).map(char => <Card key={char.id} handleModalContent={handleModalContent} character={char} openModal={openModal} />)          
+        }
       </div>
 
 
